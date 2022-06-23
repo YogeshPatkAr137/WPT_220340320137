@@ -1,0 +1,118 @@
+<html>
+<body>
+
+<form action="poc2" method="get">
+
+
+</form>
+
+
+<form action="poc1" method="post">
+
+<input type="text" name="Boook id" id="bookid" placeholder="book id" />
+<span id="msg">display message</span><br>
+<input type="text" name="book name" id="bookname" placeholder="book name" /><br>
+<input type="text" name="price" id="price" placeholder="price" /><br>
+<input type="button" value="update" id="update" disabled/>
+</form>
+
+
+
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+$(()=>
+{
+console.log("no more sins");
+$("#bookid").blur(()=> 
+	{ 
+		console.log("blur event occur");
+	
+	let input ={bookid: $('#bookid').val()}
+	
+	let ajaxparameters ={
+		data : input,
+		url: "http://localhost:90/getdetails",
+		type: 'get',
+		datatype: 'json',
+		success: (datafromserver)=>{
+			if(datafromserve.status===true){
+				console.log("data fetched");
+				$('#bookname').val(datafromserve.bookdetails.bookname);
+				$('#price').val(datafromserve.bookdetails.price);
+				$('#msg').text("book details found");
+				$('#update').prop("disabled",false);
+
+			}
+			else{
+				$('#bookname').val("");
+				$('#price').val("");
+				$('#msg').text("book details not found");
+				$('#update').prop("disabled",true);
+			}
+		},
+		error:(errorfromserver)=>{
+			console.log("errorfound"+errorfromserver);
+		}
+		}
+	$.ajax(ajaxparameter);
+
+	//-----------------------------------------------------
+	$("#update").click(()=> 
+	{ 
+		console.log("click event occur");
+	
+	let input ={bookid: $('#bookid').val(), bookname: $('#bookname').val(), price: $('#price').val()}
+	
+	let ajaxparameters ={
+		data : input,
+		url: "http://localhost:90/updatebook",
+		type: 'get',
+		datatype: 'json',
+		success: (datafromserver)=>{
+			if(datafromserve.status===true){
+				console.log("book data updated");
+				
+				$('#msg').text("update succesful");
+				
+			}
+			else{
+				console.log("update unsuccesfull");
+				
+				$('#msg').text("book details not found");
+				
+			}
+		},
+		error:(errorfromserver)=>{
+			console.log("errorfound");
+			$('#msg').text("error found");
+		}
+		}
+	$.ajax(ajaxparameter);
+	
+	
+	
+	
+	})
+});
+
+
+/*$(document).ready(function()
+{
+console.log("no more sins");
+$("#b2").click(function () 
+	{ 
+		//console.log("jquery works");
+		alert("jquery works")
+	});
+	
+});*/
+
+
+</script>
+
+
+</html>
